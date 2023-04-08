@@ -1,0 +1,277 @@
+# i3 config.
+# Used to configure i3 gaps for joker theme.
+# Store in ~/.config/i3/config
+#
+# https://i3wm.org/docs/userguide.html
+#
+
+# Win. modifier key
+set $mod Mod4
+
+# font for window titles
+# will also be used by the bar unless a different font is used in the bar {} block below
+font pango:Iosevka Fixed Extended 11
+
+# define names for default workspaces for which we configure key bindings later on
+# we use variables to avoid repeating the names in multiple places
+set $ws1 "1:  Terminal"
+set $ws2 "2:  Code"
+set $ws3 "3:  Firefox"
+set $ws4 "4:  Spotify"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# sets colours
+set $bgcolour #11823b66
+set $ibgcolour #363636
+set $fws #11823b80
+set $barcolour #00897b0D
+set $textcolour #ffffff
+set $itextcolour #969696
+set $ubgcolour #ff0000
+
+# disable window titlebars entirely
+for_window [class="^.*"] border pixel 2
+
+# set floating dialog size
+for_window [floating] resize set 1920 1200, move position center
+
+# assign programs to workspace. use the xprop command and select the program to find the class
+for_window [class="Code"] move to workspace $ws2
+for_window [class="firefox"] move to workspace $ws3
+for_window [class="Spotify"] move to workspace $ws4
+
+
+# ========================== STARTUP FUNCTIONS ==========================
+
+# start XDG autostart .desktop files using dex
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the screen before suspend
+# use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# start nm-applet, a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# keyboard layout
+exec_always setxkbmap gb
+
+# display resolution
+exec_always xrandr --output eDP-1 --mode 3840x2400
+
+# display wallpaper
+exec_always feh --bg-fill /home/jonathane/.bg/joker-home.jpg
+
+# runs compositor
+exec_always picom -b
+
+# open terminal on startup
+exec exec terminator
+
+
+# ============================= GAPS SETUP ==============================
+
+# set inner/outer gaps
+gaps inner 10
+gaps outer 15
+
+# smart gaps (gaps used if only more than one container on the workspace)
+# smart_borders on
+
+
+# ============================= COLOUR SETUP ============================
+
+# class                 border      backgr.     text            indicator   child_border
+client.focused          $bgcolour   $bgcolour   $textcolour     $bgcolour
+client.unfocused	    $ibgcolour  $ibgcolour  $itextcolour    $ibgcolour
+client.focused_inactive $bgcolour   $ibgcolour  $itextcolour    $ibgcolour
+client.urgent		    $bgcolour   $bgcolour   $textcolour     $bggcolour
+
+
+# ============================== STATUS BAR =============================
+
+# start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
+# bar {
+    # used to start i3bar
+    # status_command i3status -c /home/jonathane/.config/i3status/i3status.conf
+	
+    # used to set bar using i3blocks 
+    # status_command i3blocks -c /home/jonathane/.config/i3blocks/i3blocks.conf -vv
+	# i3bar_command i3bar --transparency
+	# tray_output none
+	# font pango:monospace 11
+	# colors {
+	# 	background $barcolour
+	# 	separator #282828
+	# 	focused_workspace $fws $fws $textcolour
+	# 	inactive_workspace $ibgcolour $ibgcolour $itextcolour
+	#	urgent_workspace $ubgcolour $ubgcolour $textcolour
+	#}
+# }
+
+# polybar launch script
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+
+# ============================= KEYBINDINGS =============================
+
+# start a terminal
+bindsym $mod+Return exec terminator
+
+# kill focused window
+bindsym $mod+q kill
+
+# start rofi/dmenu
+bindsym $mod+space exec rofi -show run -font "Iosevka Fixed Extended 24"
+# bindsym $mod+space exec --no-startup-id ~/.config/rofi/launchers/joker/launcher.sh
+# bindsym $mod+space exec --no-startup-id dmenu_run -fn "Ubuntu Mono:regular:pixelsize=36"
+
+# switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# change window focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+p fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+f floating toggle
+# change focus between tiling / floating windows
+bindsym $mod+f focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+# focus the child container
+bindsym $mod+d focus child
+
+# use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+tiling_drag modifier titlebar
+
+# toggle the resize mode
+bindsym $mod+r mode "resize"
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+# press $mod+Shift+g to enter the gap mode. choose o or i for modifying outer/inner gaps. press one of + / -
+# (int-/decrement for current workspace) or 0
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+mode "$mode_gaps" {
+	bindsym o mode "$mode_gaps_outer"
+	bindsym i mode "$mode_gaps_inner"
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+	bindsym plus gaps inner current plus 5
+	bindsym minus gaps inner current minus 5
+	bindsym 0 gaps inner current set 0
+
+	bindsym Shift+plus gaps inner all plus 5
+	bindsym Shift+minus gaps inner all minus 5
+	bindsym Shift+0 gaps inner all set 0
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+	bindsym plus gaps outer current plus 5
+	bindsym minus gaps outer current minus 5
+	bindsym 0 gaps outer current set 0
+
+	bindsym Shift+plus gaps outer all plus 5
+	bindsym Shift+minus gaps outer all minus 5
+	bindsym Shift+0 gaps outer all set 0
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
+# use pactl to adjust volume in PulseAudio.
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+
+# use xbacklight to control screen brightness.
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+
+# keybinding for i3lock
+bindsym $mod+l exec /home/jonathane/.config/i3lock/scripts/lock
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+

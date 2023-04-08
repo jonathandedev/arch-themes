@@ -1,0 +1,337 @@
+; Polybar config file
+; Store in ~/.config/polybar/config.ini
+
+;================================= COLOURS =================================
+
+[colors]
+; main green background
+background = #3311823b
+; green highlight
+highlight = #5c11823b
+; text options
+text = #ffffff
+text-alt = #11823b
+; red highlight
+alert = #c02727
+; urgent highlight
+urgent = #5cc02727
+; orange highlight
+warn = #c07427
+; grey disable
+disabled = #707880
+
+
+;================================= TOP BAR =================================
+
+[bar/topbar]
+width = 100%
+height = 20pt
+radius = 10pt
+padding-left = 1
+padding-right = 2
+
+dpi = 192
+
+background = ${colors.background}
+foreground = ${colors.text}
+
+border-top-size = 12pt
+border-color = #00000000
+
+font-0 = Droid Sans Mono:pixelsize=11;3
+font-1 = Font Awesome 6 Free:pixelsize=9;2
+font-2 = Font Awesome 6 Free Solid:pixelsize=9;2
+font-3 = Font Awesome 6 Brands:pixelsize=9;2
+font-4 = Material Icons:pixelsize=12;5
+font-5 = Siji:pixelsize=11;1
+
+line-size = 3pt
+line-color = ${colors.text-alt}
+
+module-margin = 1
+separator = /
+separator-foreground = ${colors.text-alt}
+
+modules-left = window
+modules-right = backlight pulseaudio wifi date battery
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+enable-ipc = true
+tray-position = none
+override-redirect = false
+
+
+
+;============================== WINDOW MODULE ==============================
+
+[module/window]
+type = internal/xwindow
+label = %title:0:60:...%
+
+;============================= BACKLIGHT MODULE ============================
+
+[module/backlight]
+type = internal/backlight
+format = <ramp> <label>
+
+card =  intel_backlight
+
+label = %percentage%%
+label-foreground = ${colors.text-alt}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${colors.text-alt}
+
+;=============================== AUDIO MODULE ==============================
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume-prefix = " "
+format-volume-prefix-foreground = ${colors.text-alt}
+format-volume = <label-volume>
+
+label-volume = %percentage%%
+label-volume-foreground = ${colors.text-alt}
+label-muted = muted
+label-muted-foreground = ${colors.disabled}
+
+;=============================== WIFI MODULE ===============================
+
+[module/wifi]
+type = internal/network
+interface = wlan0
+interval = 5.0
+ping-interval = 10
+
+format-connected = <ramp-signal> <label-connected>
+format-connected-foreground = ${colors.text-alt}
+label-connected = %local_ip%  %downspeed%  %upspeed%
+label-connected-foreground = ${colors.text-alt}
+label-disconnected =    not connected
+label-disconnected-foreground = ${colors.disabled}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
+
+animation-packetloss-0 = 
+animation-packetloss-0-foreground = ${colors.text-alt}
+animation-packetloss-1 = 
+animation-packetloss-1-foreground = ${colors.text-alt}
+animation-packetloss-framerate = 500
+
+;=============================== DATE MODULE ===============================
+
+[module/date]
+type = internal/date
+
+interval = 1
+date = %Y-%m-%d %H:%M:%S
+
+label = %date%
+label-foreground = ${colors.text-alt}
+
+;============================== BATTERY MODULE =============================
+
+[module/battery]
+type = internal/battery
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+format-full = <ramp-capacity> <label-full>
+
+label-charging = %percentage%% %time%
+label-charging-foreground = ${colors.text-alt}
+label-discharging = %percentage%% %time%
+label-discharging-foreground = ${colors.text-alt}
+label-full-foreground = ${colors.text-alt}
+
+ramp-capacity-0 = 
+ramp-capacity-0-foreground = ${colors.alert}
+ramp-capacity-1 = 
+ramp-capacity-1-foreground = ${colors.warn}
+ramp-capacity-2 = 
+ramp-capacity-2-foreground = ${colors.text-alt}
+ramp-capacity-3 = 
+ramp-capacity-3-foreground = ${colors.text-alt}
+ramp-capacity-4 = 
+ramp-capacity-4-foreground = ${colors.text-alt}
+
+bar-capacity-foreground = ${colors.text-alt}
+bar-capacity-width = 10
+bar-capacity-format = %{+u}%{+o}%fill%%empty%%{-u}%{-o}
+bar-capacity-fill = █
+bar-capacity-fill-foreground = ${colors.text-alt}
+bar-capacity-fill-font = 3
+bar-capacity-empty = █
+bar-capacity-empty-font = 3
+bar-capacity-empty-foreground = ${colors.text-alt}
+
+animation-charging-0 = 
+animation-charging-0-foreground = ${colors.text-alt}
+animation-charging-1 = 
+animation-charging-1-foreground = ${colors.text-alt}
+animation-charging-2 = 
+animation-charging-2-foreground = ${colors.text-alt}
+animation-charging-3 = 
+animation-charging-3-foreground = ${colors.text-alt}
+animation-charging-4 = 
+animation-charging-4-foreground = ${colors.text-alt}
+animation-charging-framerate = 750
+
+
+
+;=============================== BOTTOM BAR ================================
+
+[bar/bottombar]
+bottom = true
+width = 100%
+height = 20pt
+radius = 10pt
+padding-left = 1
+padding-right = 2
+
+dpi = 192
+
+background = ${colors.background}
+foreground = ${colors.text}
+
+border-bottom-size = 12pt
+border-color = #00000000
+
+
+font-0 = Droid Sans Mono:pixelsize=11;4
+font-1 = Font Awesome 6 Free:pixelsize=9;3
+font-2 = Font Awesome 6 Free Solid:pixelsize=9;3
+font-3 = Font Awesome 6 Brands:pixelsize=9;3
+font-4 = Material Icons:pixelsize=12;5
+font-5 = Siji:pixelsize=11;2
+font-6 = Unifont:size=9;2
+
+
+line-size = 3pt
+line-color = ${colors.text-alt}
+
+module-margin = 1
+separator = /
+separator-foreground = ${colors.text-alt}
+
+modules-left = workspaces
+modules-right = filesystem memory cpu
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+enable-ipc = true
+tray-position = none
+override-redirect = false
+
+
+
+;============================ XWORKSPACES MODULE =============================
+
+[module/workspaces]
+type = internal/xworkspaces
+format = <label-state>
+
+label-active = %name%
+label-active-background = ${colors.highlight}
+label-active-underline= ${colors.text-alt}
+label-active-padding = 1
+
+label-occupied = %name%
+label-occupied-padding = 1
+
+label-urgent = %name%
+label-urgent-background = ${colors.urgent}
+label-urgent-underline = ${colors.alert}
+label-urgent-padding = 1
+
+label-empty = %name%
+label-empty-foreground = ${colors.disabled}
+label-empty-padding = 1
+
+;============================== STORAGE MODULE ==============================
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /home
+
+label-mounted = %mountpoint% %free%
+label-mounted-foreground = ${colors.text-alt}
+
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.disabled}
+
+;=============================== MEMORY MODULE ==============================
+
+[module/memory]
+type = internal/memory
+format = <label> <bar-used>
+label = RAM
+label-foreground = ${colors.text-alt}
+
+bar-used-width = 30
+bar-used-foreground-0 = ${colors.text-alt}
+bar-used-foreground-1 = #aaff77
+bar-used-foreground-2 = #fba922
+bar-used-foreground-3 = #ff5555
+bar-used-indicator = +
+bar-used-indicator-font = 6
+bar-used-indicator-foreground = #ff
+bar-used-fill = ─
+bar-used-fill-font = 6
+bar-used-empty = ─
+bar-used-empty-font = 6
+bar-used-empty-foreground = #444444
+
+;================================ CPU MODULE ================================
+
+[module/cpu]
+type = internal/cpu
+interval = 0.5
+format = <label> <ramp-coreload>
+label = CPU
+label-foreground = ${colors.text-alt}
+ramp-coreload-0 = ▁
+ramp-coreload-0-font = 2
+ramp-coreload-0-foreground = ${colors.text-alt}
+ramp-coreload-1 = ▂
+ramp-coreload-1-font = 2
+ramp-coreload-1-foreground = ${colors.text-alt}
+ramp-coreload-2 = ▃
+ramp-coreload-2-font = 2
+ramp-coreload-2-foreground = ${colors.text-alt}
+ramp-coreload-3 = ▄
+ramp-coreload-3-font = 2
+ramp-coreload-3-foreground = ${colors.text-alt}
+ramp-coreload-4 = ▅
+ramp-coreload-4-font = 2
+ramp-coreload-4-foreground = ${colors.warn}
+ramp-coreload-5 = ▆
+ramp-coreload-5-font = 2
+ramp-coreload-5-foreground = ${colors.warn}
+ramp-coreload-6 = ▇
+ramp-coreload-6-font = 2
+ramp-coreload-6-foreground = ${colors.alert}
+ramp-coreload-7 = █
+ramp-coreload-7-font = 2
+ramp-coreload-7-foreground = ${colors.alert}
+
+
+;================== SETTINGS ==================
+
+[settings]
+screenchange-reload = true
+pseudo-transparency = true
+
+; vim:ft=dosini
